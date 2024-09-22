@@ -31,6 +31,42 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	// Validate Username
+	if !utils.IsValidUsername(input.Username) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": false,
+			"code":   http.StatusBadRequest,
+			"error": gin.H{
+				"message": "Invalid username. Must be 3-50 characters and contain only letters, numbers, underscores, or dashes.",
+			},
+		})
+		return
+	}
+
+	// Validate Password
+	if !utils.IsValidPassword(input.Password) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": false,
+			"code":   http.StatusBadRequest,
+			"error": gin.H{
+				"message": "Invalid password. Must be at least 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+			},
+		})
+		return
+	}
+
+	// Validate Email
+	if !utils.IsValidEmail(input.Email) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": false,
+			"code":   http.StatusBadRequest,
+			"error": gin.H{
+				"message": "Invalid email format.",
+			},
+		})
+		return
+	}
+
 	// เช็คว่ามี username อยู่แล้วหรือไม่
 	var existingUser models.User
 	if err := config.DB.Where("username = ?", input.Username).First(&existingUser).Error; err == nil {
@@ -84,7 +120,7 @@ func Register(c *gin.Context) {
 			"status": false,
 			"code":   http.StatusInternalServerError,
 			"error": gin.H{
-				"meesage": err.Error(),
+				"message": err.Error(),
 			},
 		})
 		return
