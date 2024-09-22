@@ -2,7 +2,6 @@ package main
 
 import (
 	"blacklist-backend/config"
-	"blacklist-backend/middlewares"
 	"blacklist-backend/models"
 	"blacklist-backend/routes"
 	"log"
@@ -22,8 +21,6 @@ func main() {
 		log.Fatal("Failed to migrate database:", err)
 	}
 	log.Println("Database migrated successfully.")
-
-	r.Use(middlewares.Header())
 
 	r.Run(":8080")
 }
