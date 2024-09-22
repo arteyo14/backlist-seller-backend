@@ -132,3 +132,14 @@ func Login(c *gin.Context) {
 
 	utils.JSONResponse(c, http.StatusOK, true, gin.H{"token": tokenString})
 }
+
+func Logout(c *gin.Context) {
+	// ลบ Token ใน Cookie (ถ้ามีการเก็บไว้ใน Cookie)
+	c.SetCookie("jwt", "", -1, "/", "", false, true)
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  true,
+		"code":    http.StatusOK,
+		"message": "Logged out successfully!",
+	})
+}

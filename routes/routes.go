@@ -15,6 +15,7 @@ func SetupRoutes() *gin.Engine {
 	//auth
 	r.POST("/register", controllers.Register)
 	r.POST("/login", controllers.Login)
+	r.POST("logout", controllers.Logout)
 
 	protected := r.Group("/api")
 	protected.Use(middlewares.AuthMiddleware())
